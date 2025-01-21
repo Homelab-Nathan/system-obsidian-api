@@ -1,9 +1,6 @@
-import fs from "fs";
-import { File } from "../entities/file";
-
-export interface FileParser {
-    parseFolder(folderPath: string): File[]
-}
+import {readFileSync, readdirSync} from "fs";
+import { File } from "src/domain/entities/file";
+import { FileParser } from "src/domain/ports/fileParser";
 
 export class FileParserObsidianMarkdown implements FileParser {
 
@@ -13,11 +10,11 @@ export class FileParserObsidianMarkdown implements FileParser {
     }
 
     private getFilesPath(folderPath: string): string[] {
-        return fs.readdirSync(folderPath)
+        return readdirSync(folderPath)
     }
 
     private getFileContent(folderPath: string, fileName: string): string {
-        return fs.readFileSync(folderPath + "/" + fileName, "utf-8")
+        return readFileSync(folderPath + "/" + fileName, "utf-8")
     }
 
     private parseContentToFile(fileName: string, fileContent: string): File {

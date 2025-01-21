@@ -1,10 +1,7 @@
-import fs from 'fs';
-import { parse } from "yaml";
-import { Project } from "../entities/project";
-
-export interface ProjectParser {
-    parse(projectFilePath: string): Project
-}
+import {readFileSync} from 'fs';
+import { Project } from 'src/domain/entities/project';
+import { ProjectParser } from 'src/domain/ports/projectParser';
+import { parse } from 'yaml';
 
 interface ProjectYaml {
     folder_path: FolderPath;
@@ -18,10 +15,10 @@ interface FolderPath {
 }
 
 
-export class YamlProjectParser implements ProjectParser {
+export class ProjectParserYaml implements ProjectParser {
 
     parse(projectFilePath: string): Project {
-        const file = fs.readFileSync(projectFilePath, 'utf8')
+        const file = readFileSync(projectFilePath, 'utf8')
         const fileContent = parse(file) as ProjectYaml
 
         return this.mapProjectYamlToProject(fileContent);
