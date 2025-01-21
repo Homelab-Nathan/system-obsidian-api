@@ -1,9 +1,8 @@
-import { NoteRepository } from "src/domain/ports/noteRepository";
-import { execSync } from "child_process";
-import { existsSync, readFileSync, writeFileSync } from "fs";
-import { createHash } from "crypto";
-import { Project } from "src/domain/entities/project";
 import { Logger } from "@nestjs/common";
+import { execSync } from "child_process";
+import { createHash } from "crypto";
+import { existsSync, readFileSync, writeFileSync } from "fs";
+import { NoteRepository } from "src/domain/ports/noteRepository";
 import constants from "../configs/constants";
 
 const gitToken = process.env.GIT_TOKEN
@@ -14,15 +13,15 @@ const gitRepoWithLogin = `https://${gitUsername}:${gitToken}@${gitRepo}`
 
 export class NoteRepositoryGitObsidianVault implements NoteRepository {
     private readonly logger = new Logger("NoteRepository");
-    
-    constructor(private readonly hashStorage: HashStorage, private readonly repositoryPath: string) {}
-    
+
+    constructor(private readonly hashStorage: HashStorage, private readonly repositoryPath: string) { }
+
     repositoryExist(): boolean {
         return existsSync(constants.obsidian_path);
     }
 
     initRepository(): void {
-        this.logger.debug(execSync(`git clone https://${gitRepo}`).toString())
+        this.logger.debug(execSync(`git clone ${gitRepoWithLogin}`).toString())
     }
 
     haveChanged(): boolean {
@@ -60,7 +59,7 @@ export interface HashStorage {
 }
 
 export class HashStorageFile implements HashStorage {
-    
+
     private hash: string = "";
     private filePath: string;
 
@@ -71,16 +70,16 @@ export class HashStorageFile implements HashStorage {
     }
 
     private saveHash(): void {
-        if(!existsSync(this.filePath)) {
+        if (!existsSync(this.filePath)) {
             throw new Error(`Le fichier de hash n'existe pas ${this.filePath}`)
         }
 
-        writeFileSync(this.filePath, this.hash, {encoding: "utf-8"})
+        writeFileSync(this.filePath, this.hash, { encoding: "utf-8" })
     }
 
     private initFile() {
-        if(!existsSync(this.filePath)) {
-            writeFileSync(this.filePath, "", {encoding: "utf-8"})
+        if (!existsSync(this.filePath)) {
+            writeFileSync(this.filePath, "", { encoding: "utf-8" })
         }
     }
 
@@ -90,7 +89,7 @@ export class HashStorageFile implements HashStorage {
             flag: "r"
         })
     }
-    
+
     set(newHash: string): void {
         this.hash = newHash;
         this.saveHash();

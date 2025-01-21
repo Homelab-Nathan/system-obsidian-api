@@ -1,18 +1,17 @@
-import { Injectable, Logger, OnModuleInit } from "@nestjs/common";
-import { FileParser } from "src/domain/ports/fileParser";
-import { ProjectParser } from "src/domain/ports/projectParser";
-import { ProjectParserYaml } from "./adapters/projectParser";
-import { FileParserObsidianMarkdown } from "./adapters/fileParser";
-import { Project } from "src/domain/entities/project";
-import getProjectConfig from "src/domain/usecases/getProjectConfig.usecase";
+import { Injectable, Logger } from "@nestjs/common";
 import constants from "src/application/configs/constants";
 import { File } from "src/domain/entities/file";
-import getFiles from "src/domain/usecases/getFiles.usecase";
+import { Project } from "src/domain/entities/project";
+import { FileParser } from "src/domain/ports/fileParser";
 import { NoteRepository } from "src/domain/ports/noteRepository";
-import { HashStorage, HashStorageFile, NoteRepositoryGitObsidianVault } from "./adapters/noteRepositoryGitObsidianVault";
-import updateRepository from "src/domain/usecases/updateNoteRepository.usecase";
-import updateNoteRepository from "src/domain/usecases/updateNoteRepository.usecase";
+import { ProjectParser } from "src/domain/ports/projectParser";
+import getFiles from "src/domain/usecases/getFiles.usecase";
+import getProjectConfig from "src/domain/usecases/getProjectConfig.usecase";
 import initNoteRepository from "src/domain/usecases/initNoteRepository.usecase";
+import updateNoteRepository from "src/domain/usecases/updateNoteRepository.usecase";
+import { FileParserObsidianMarkdown } from "./adapters/fileParser";
+import { HashStorage, HashStorageFile, NoteRepositoryGitObsidianVault } from "./adapters/noteRepositoryGitObsidianVault";
+import { ProjectParserYaml } from "./adapters/projectParser";
 
 @Injectable()
 export class DependencyInjectionService {
@@ -37,8 +36,8 @@ export class DependencyInjectionService {
 
   updateRepositoryUseCaseWithLog(logger: Logger): boolean {
     const updateRepositoryResult = this.updateRepositoryUseCase()
-    if(updateRepositoryResult) {
-      logger.log("Il est nécessaire de mettre à jour le repository")
+    if (updateRepositoryResult) {
+      logger.log("Il a été nécessaire de mettre à jour le repository")
     }
     else {
       logger.log("Le repository est déjà à jour")
@@ -52,7 +51,7 @@ export class DependencyInjectionService {
   }
 
   initNoteRepositoryUseCaseWithLog(logger: Logger): void {
-    if(this.initNoteRepositoryUseCase()) {
+    if (this.initNoteRepositoryUseCase()) {
       logger.log("Le repository à été clone")
     }
     else {

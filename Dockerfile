@@ -7,9 +7,15 @@ RUN npm run build
 
 # Étape 2 : Production
 FROM node:22-alpine AS production
+RUN apk add --no-cache git
+
 WORKDIR /usr/src/app
 COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
 COPY --chown=node:node --from=build /usr/src/app/dist ./dist
+
 ENV NODE_ENV=production
-EXPOSE 3000
+ENV GIT_TOKEN=change_me
+ENV PORT=80
+
+EXPOSE 80
 CMD [ "node", "dist/main.js" ]
