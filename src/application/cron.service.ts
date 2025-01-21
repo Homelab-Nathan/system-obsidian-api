@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { DependencyInjectionService } from './dependcyInjection.service';
+import { DependencyInjectionService } from './dependencyInjection.service';
 
 @Injectable()
 export class CronService {

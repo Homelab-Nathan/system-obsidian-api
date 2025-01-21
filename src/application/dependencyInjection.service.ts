@@ -4,18 +4,18 @@ import { ProjectParser } from "src/domain/ports/projectParser";
 import { ProjectParserYaml } from "./adapters/projectParser";
 import { FileParserObsidianMarkdown } from "./adapters/fileParser";
 import { Project } from "src/domain/entities/project";
-import getProjectConfig from "src/domain/usecases/getProjectConfig";
+import getProjectConfig from "src/domain/usecases/getProjectConfig.usecase";
 import constants from "src/application/configs/constants";
 import { File } from "src/domain/entities/file";
-import getFiles from "src/domain/usecases/getFiles";
+import getFiles from "src/domain/usecases/getFiles.usecase";
 import { NoteRepository } from "src/domain/ports/noteRepository";
 import { HashStorage, HashStorageFile, NoteRepositoryGitObsidianVault } from "./adapters/noteRepositoryGitObsidianVault";
-import updateRepository from "src/domain/usecases/updateNoteRepository";
-import updateNoteRepository from "src/domain/usecases/updateNoteRepository";
-import initNoteRepository from "src/domain/usecases/initNoteRepository";
+import updateRepository from "src/domain/usecases/updateNoteRepository.usecase";
+import updateNoteRepository from "src/domain/usecases/updateNoteRepository.usecase";
+import initNoteRepository from "src/domain/usecases/initNoteRepository.usecase";
 
 @Injectable()
-export class DependencyInjectionService implements OnModuleInit{
+export class DependencyInjectionService {
 
   private projectParser: ProjectParser;
   private fileParser: FileParser;
@@ -29,17 +29,6 @@ export class DependencyInjectionService implements OnModuleInit{
     this.fileParser = new FileParserObsidianMarkdown();
     this.hashStorage = new HashStorageFile(constants.hashFilePath);
     this.noteRepository = new NoteRepositoryGitObsidianVault(this.hashStorage, constants.obsidian_path);
-  }
-
-  onModuleInit() {
-    this.logger.debug("")
-    this.logger.debug("##### Initialisation #####")
-
-    this.initNoteRepositoryUseCaseWithLog(this.logger);
-    this.updateRepositoryUseCaseWithLog(this.logger);
-    
-    this.logger.debug("##### -------------- #####")
-    this.logger.debug("")
   }
 
   updateRepositoryUseCase(): boolean {

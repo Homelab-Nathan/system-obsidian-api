@@ -1,5 +1,5 @@
 import { Controller, Get, Logger } from '@nestjs/common';
-import { DependencyInjectionService } from '../dependcyInjection.service';
+import { DependencyInjectionService } from '../dependencyInjection.service';
 import { File } from 'src/domain/entities/file';
 
 @Controller("/files")

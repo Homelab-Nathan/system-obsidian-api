@@ -3,7 +3,8 @@ import { ConfigModule } from '@nestjs/config';
 import { CronService } from './cron.service';
 import { ScheduleModule } from '@nestjs/schedule';
 import { FilesController } from './api/files.controller';
-import { DependencyInjectionService } from './dependcyInjection.service';
+import { DependencyInjectionService } from './dependencyInjection.service';
+import { StartUpService } from './startup.service';
 
 @Module({
   imports: [
@@ -11,6 +12,6 @@ import { DependencyInjectionService } from './dependcyInjection.service';
     ScheduleModule.forRoot()
   ],
   controllers: [FilesController],
-  providers: [DependencyInjectionService, CronService],
+  providers: [DependencyInjectionService, CronService, StartUpService],
 })
 export class GlobalModule {}
